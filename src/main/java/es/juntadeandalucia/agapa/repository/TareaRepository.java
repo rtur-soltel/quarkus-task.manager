@@ -7,4 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class TareaRepository implements PanacheRepository<Tarea> {
 
+    public Tarea findByTitulo(String titulo) {
+        return find("titulo", titulo).firstResult();
+    }
 }

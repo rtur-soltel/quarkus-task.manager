@@ -19,6 +19,10 @@ public class TareasManager {
 
     @Transactional
     public Tarea crearTarea(Tarea tarea) {
+        Tarea tareaExistente = tareaRepository.findByTitulo(tarea.titulo);
+        if (tareaExistente != null) {
+            throw new IllegalArgumentException("Ya existe una tarea con el título: " + tarea.titulo);
+        }
         tareaRepository.persist(tarea);
         return tarea;
     }

@@ -42,15 +42,22 @@ public class TareasController {
     @Operation(summary = "Crear una nueva tarea", description = "Crea una nueva tarea en el sistema con los datos proporcionados")
     @APIResponses({
         @APIResponse(responseCode = "201", description = "Tarea creada exitosamente", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = TareaDTO.class))),
-        @APIResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @APIResponse(responseCode = "400", description = "Datos de entrada inválidos"),
+        @APIResponse(responseCode = "409", description = "Ya existe una tarea con ese título")
     })
     public Response crear(
         @Valid
         @Parameter(description = "Datos de la tarea a crear", required = true, schema = @Schema(implementation = TareaDTO.class))
         TareaDTO dto) {
-        Tarea tarea = tareaMapper.toEntity(dto);
-        Tarea nuevaTarea = tareasManager.crearTarea(tarea);
-        return Response.status(Response.Status.CREATED).entity(tareaMapper.toDTO(nuevaTarea)).build();
+        try {
+            Tarea tarea = tareaMapper.toEntity(dto);
+            Tarea nuevaTarea = tareasManager.crearTarea(tarea);
+            return Response.status(Response.Status.CREATED).entity(tareaMapper.toDTO(nuevaTarea)).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "}")
+                .build();
+        }
     }
 
     @PUT
