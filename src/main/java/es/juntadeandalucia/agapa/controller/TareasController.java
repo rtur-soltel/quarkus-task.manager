@@ -5,6 +5,7 @@ import es.juntadeandalucia.agapa.dto.TareaMapper;
 import es.juntadeandalucia.agapa.jpa.Tarea;
 import es.juntadeandalucia.agapa.service.TareasManager;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -44,6 +45,7 @@ public class TareasController {
         @APIResponse(responseCode = "400", description = "Datos de entrada inválidos")
     })
     public Response crear(
+        @Valid
         @Parameter(description = "Datos de la tarea a crear", required = true, schema = @Schema(implementation = TareaDTO.class))
         TareaDTO dto) {
         Tarea tarea = tareaMapper.toEntity(dto);
