@@ -1,0 +1,34 @@
+package es.juntadeandalucia.agapa.jpa;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Tarea {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+
+    @Column(nullable = false)
+    public String titulo;
+
+    @Column
+    public String descripcion;
+
+    @Column(nullable = false)
+    public boolean completada = false;
+
+    public Tarea() {
+    }
+
+    public Tarea(String titulo, String descripcion) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.completada = false;
+    }
+}
