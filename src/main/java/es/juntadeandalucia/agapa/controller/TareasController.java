@@ -90,4 +90,21 @@ public class TareasController {
         tareasManager.eliminarTarea(id);
         return Response.status(Response.Status.OK).build();
     }
+
+    @GET
+    @Path("/{id}")
+    @Operation(summary = "Consultar una tarea", description = "Elimina una tarea específica del sistema")
+    @APIResponses({
+        @APIResponse(responseCode = "200", description = "Tarea consultada exitosamente"),
+        @APIResponse(responseCode = "404", description = "Tarea no encontrada")
+    })
+    public Response consultarPorId(
+        @Parameter(description = "ID de la tarea a consultar", required = true, example = "1")
+        @PathParam("id") Long id) {
+        Tarea tarea = tareasManager.obtenerTareaPorId(id);
+        if (tarea == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(tareaMapper.toDTO(tarea)).build();
+    }
 }

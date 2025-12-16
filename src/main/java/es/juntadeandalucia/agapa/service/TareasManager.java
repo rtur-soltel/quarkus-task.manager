@@ -17,6 +17,10 @@ public class TareasManager {
         return tareaRepository.listAll();
     }
 
+    public Tarea obtenerTareaPorId(Long id) {
+        return tareaRepository.findById(id);
+    }
+
     @Transactional
     public Tarea crearTarea(Tarea tarea) {
         Tarea tareaExistente = tareaRepository.findByTitulo(tarea.titulo);

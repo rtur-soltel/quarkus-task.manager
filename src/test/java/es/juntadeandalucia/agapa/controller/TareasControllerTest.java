@@ -94,10 +94,10 @@ class TareasControllerTest {
         // Vamos a verificar que existe en la lista
         given()
             .when()
-                .get("/tareas")
+                .get("/tareas/" + idExistente)
             .then()
                 .statusCode(200)
-                .body("id", hasItem(idExistente));
+                .body("id", equalTo(idExistente));
     }
 
     @Test
@@ -231,5 +231,22 @@ class TareasControllerTest {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("size()", greaterThan(0));
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("Test 11: Consultar tarea No existente - Debe devolver código 404")
+    void testConsultarTareaNoExistente() {
+        // Primero listamos para obtener un ID válido
+        Integer idExistente = Integer.MAX_VALUE; // Un ID que seguramente no existe
+
+        // Ahora consultamos esa tarea específica (aunque el endpoint no existe en el controller)
+        // Vamos a verificar que existe en la lista
+        given()
+            .when()
+                .get("/tareas/" + idExistente)
+            .then()
+                .statusCode(404);
+                
     }
 }
